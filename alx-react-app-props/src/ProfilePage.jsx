@@ -1,7 +1,7 @@
 import UserInfo from './UserInfo';
 
 function ProfilePage() {
-  // No props needed anymore!
+  
   return (
     <div style={{
       maxWidth: '600px',
