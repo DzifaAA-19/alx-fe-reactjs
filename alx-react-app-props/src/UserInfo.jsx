@@ -1,14 +1,7 @@
-import UserDetails from './UserDetails';
+import UserProfile from "./UserProfile";
 
 function UserInfo() {
-  return (
-    <div style={{ padding: '20px' }}>
-      <h2 style={{ textAlign: 'center', color: '#333' }}>
-        User Information
-      </h2>
-      <UserDetails />
-    </div>
-  );
+  return <UserProfile />;
 }
 
 export default UserInfo;
