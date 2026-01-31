@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const fetchAdvancedUserData = async (username, location, minRepos) => {
+const fetchUserData = async (username, location, minRepos) => {
   let query = username;
 
   if (location) {
@@ -18,4 +18,4 @@ const fetchAdvancedUserData = async (username, location, minRepos) => {
   return response.data;
 };
 
-export default fetchAdvancedUserData;
+export default fetchUserData;
