@@ -1,9 +1,15 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import recipesData from "../data.json";
 
 export default function RecipeDetail() {
   const { id } = useParams();
-  const recipe = recipesData.find((r) => r.id === parseInt(id));
+  const [recipe, setRecipe] = useState(null);
+
+  useEffect(() => {
+    const found = recipesData.find((r) => r.id === parseInt(id));
+    setRecipe(found);
+  }, [id]);
 
   if (!recipe) {
     return (
@@ -12,19 +18,6 @@ export default function RecipeDetail() {
       </div>
     );
   }
-
-  // Mock ingredients and steps (since data.json only has summary)
-  const ingredients = [
-    "Ingredient 1",
-    "Ingredient 2",
-    "Ingredient 3",
-  ];
-
-  const steps = [
-    "Step 1: Do something.",
-    "Step 2: Do next thing.",
-    "Step 3: Finish up.",
-  ];
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -44,16 +37,16 @@ export default function RecipeDetail() {
         <div className="mb-4">
           <h2 className="text-2xl font-semibold mb-2">Ingredients</h2>
           <ul className="list-disc list-inside text-gray-700">
-            {ingredients.map((item, index) => (
+            {recipe.ingredients.map((item, index) => (
               <li key={index}>{item}</li>
             ))}
           </ul>
         </div>
 
         <div>
-          <h2 className="text-2xl font-semibold mb-2">Cooking Steps</h2>
+          <h2 className="text-2xl font-semibold mb-2">Cooking Instructions</h2>
           <ol className="list-decimal list-inside text-gray-700">
-            {steps.map((step, index) => (
+            {recipe.instructions.map((step, index) => (
               <li key={index} className="mb-1">{step}</li>
             ))}
           </ol>
