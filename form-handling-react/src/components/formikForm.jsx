@@ -7,7 +7,9 @@ export default function FormikForm() {
   const validationSchema = Yup.object({
     username: Yup.string().required("Username is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
-    password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
   });
 
   return (
@@ -18,9 +20,7 @@ export default function FormikForm() {
         <Formik
           initialValues={{ username: "", email: "", password: "" }}
           validationSchema={validationSchema}
-          onSubmit={(values, { resetForm }) => {
-            resetForm();
-          }}
+          onSubmit={(values, { resetForm }) => resetForm()}
         >
           {({ isSubmitting }) => (
             <Form>
