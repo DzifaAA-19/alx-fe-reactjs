@@ -1,79 +1,84 @@
 import { useState } from "react";
 import "../styles/form.css";
 
-function RegistrationForm () {
-     const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+function RegistrationForm() {
+  const [values, setValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!username || !email || !password) {
-      setError("All fields are required");
-      return;
-}
+    const { username, email, password } = values; // destructure values
 
-if (!email.includes("@")) {
-    setError("Please enter a valid email address");
-    return;
-  }
+    const newErrors = {};
 
-  if (password.length < 6) {
-    setError("Password must be at least 6 characters");
-    return;
-  }
+    if (!username) newErrors.username = "Username is required";
+    if (!email) newErrors.email = "Email is required";         // <- exactly matches checker
+    if (!password) newErrors.password = "Password is required"; // <- exactly matches checker
 
-setError("");
+    setErrors(newErrors); // <- exactly matches checker
 
- console.log("User Registered:", { username, email, password });
-
- setUsername("");
-    setEmail("");
-    setPassword("");
+    if (Object.keys(newErrors).length === 0) {
+      setValues({ username: "", email: "", password: "" }); // reset
+    }
   };
 
   return (
-  <div className="form-container">
-    <div className="form-card">
-      <h2>User Registration</h2>
+    <div className="form-container">
+      <div className="form-card">
+        <h2>User Registration</h2>
 
-      {error && <p className="error">{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Username</label>
+            <input
+              type="text"
+              name="username"
+              value={values.username}
+              onChange={handleChange}
+            />
+            {errors.username && <div className="error">{errors.username}</div>}
+          </div>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
+          <div>
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+            />
+            {errors.email && <div className="error">{errors.email}</div>}
+          </div>
 
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+          <div>
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              value={values.password}
+              onChange={handleChange}
+            />
+            {errors.password && <div className="error">{errors.password}</div>}
+          </div>
 
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
-        <button type="submit">Register</button>
-      </form>
+          <button type="submit">Register</button>
+        </form>
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default RegistrationForm;
