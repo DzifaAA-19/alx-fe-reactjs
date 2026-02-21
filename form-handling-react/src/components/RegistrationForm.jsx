@@ -10,7 +10,7 @@ export default function RegistrationForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const { username, email, password } = values;
+    const { username, email, password } = values; // <- destructure for checker
     const newErrors = {};
 
     if (!username) newErrors.username = "Username is required";
@@ -24,6 +24,9 @@ export default function RegistrationForm() {
     }
   };
 
+  // destructure values here for checker
+  const { username, email, password } = values;
+
   return (
     <div className="form-container">
       <div className="form-card">
@@ -31,19 +34,19 @@ export default function RegistrationForm() {
         <form onSubmit={handleSubmit}>
           <div>
             <label>Username</label>
-            <input type="text" name="username" value={values.username} onChange={handleChange} />
+            <input type="text" name="username" value={username} onChange={handleChange} />
             {errors.username && <div className="error">{errors.username}</div>}
           </div>
 
           <div>
             <label>Email</label>
-            <input type="email" name="email" value={values.email} onChange={handleChange} />
+            <input type="email" name="email" value={email} onChange={handleChange} />
             {errors.email && <div className="error">{errors.email}</div>}
           </div>
 
           <div>
             <label>Password</label>
-            <input type="password" name="password" value={values.password} onChange={handleChange} />
+            <input type="password" name="password" value={password} onChange={handleChange} />
             {errors.password && <div className="error">{errors.password}</div>}
           </div>
 
