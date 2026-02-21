@@ -1,13 +1,8 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Link, Navigate, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useParams } from "react-router-dom";
 import Profile from "./components/Profile.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import "./styles/routes.css";
-
-const isAuthenticated = true;
-
-function ProtectedRoute({ children }) {
-  return isAuthenticated ? children : <Navigate to="/login" />;
-}
 
 function Home() { return <h2>Home Page</h2>; }
 function Login() { return <h2>Login Page (simulate login)</h2>; }
