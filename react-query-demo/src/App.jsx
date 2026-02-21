@@ -1,50 +1,87 @@
 import React from "react";
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { BrowserRouter, Routes, Route, Link, Navigate, Outlet, useParams } from "react-router-dom";
+import "./styles/routes.css";
 
-// Create QueryClient (checker wants "queryClient" literal)
-const queryClient = new QueryClient();
+// Simulated authentication
+const isAuthenticated = true;
 
-// PostsComponent inside same file (checker-friendly)
-function PostsComponent() {
-  const fetchPosts = async () => {
-    const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
-    return res.data;
-  };
+// Protected Route Component
+function ProtectedRoute({ children }) {
+  return isAuthenticated ? children : <Navigate to="/login" />;
+}
 
-  const { data, isLoading, isError, error, refetch } = useQuery(["posts"], fetchPosts, {
-    staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
-  });
+// Pages
+function Home() {
+  return <h2>Home Page</h2>;
+}
 
-  if (isLoading) return <p>Loading posts...</p>;
-  if (isError) return <p>Error: {error.message}</p>;
+function Login() {
+  return <h2>Login Page (simulate login)</h2>;
+}
 
+// Profile with Nested Routes
+function Profile() {
   return (
-    <div style={{ padding: "1rem" }}>
-      <button onClick={() => refetch()} style={{ marginBottom: "1rem" }}>
-        Refetch Posts
-      </button>
-      <ul>
-        {data.map((post) => (
-          <li key={post.id} style={{ marginBottom: "0.5rem" }}>
-            <strong>{post.title}</strong>
-            <p>{post.body}</p>
-          </li>
-        ))}
-      </ul>
+    <div>
+      <h2>Profile Page</h2>
+      <nav>
+        <Link to="details">Details</Link> | <Link to="settings">Settings</Link>
+      </nav>
+      <Outlet />
     </div>
   );
 }
 
-// App with QueryClientProvider inside same file
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <h1>React Query Demo</h1>
-      <PostsComponent />
-    </QueryClientProvider>
-  );
+function ProfileDetails() {
+  return <p>This is your profile details.</p>;
 }
 
-export default App;
+function ProfileSettings() {
+  return <p>This is your profile settings.</p>;
+}
+
+// Dynamic Route
+function BlogPost() {
+  const { id } = useParams();
+  return <h3>Blog Post ID: {id}</h3>;
+}
+
+// App Component
+export default function App() {
+  return (
+    <BrowserRouter>
+      <div>
+        <h1>React Router Advanced Demo</h1>
+        <nav>
+          <Link to="/">Home</Link> |{" "}
+          <Link to="/profile">Profile</Link> |{" "}
+          <Link to="/login">Login</Link> |{" "}
+          <Link to="/blog/123">Blog 123</Link>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          
+          {/* Protected nested route */}
+          <Route
+            path="/profile/*"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="details" element={<ProfileDetails />} />
+            <Route path="settings" element={<ProfileSettings />} />
+          </Route>
+
+          {/* Dynamic Route */}
+          <Route path="/blog/:id" element={<BlogPost />} />
+
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<h2>Page Not Found</h2>} />
+        </Routes>
+      </div>
+    </BrowserRouter>
+  );
+}
