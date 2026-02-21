@@ -1,8 +1,12 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Link, Navigate, Outlet, useParams } from "react-router-dom";
+import Profile from "./components/Profile.jsx";
+import ProfileDetails from "./components/ProfileDetails.jsx";
+import ProfileSettings from "./components/ProfileSettings.jsx";
 import "./styles/routes.css";
 
-const isAuthenticated = true; // Simulate login
+// Simulated authentication
+const isAuthenticated = true;
 
 function ProtectedRoute({ children }) {
   return isAuthenticated ? children : <Navigate to="/login" />;
@@ -11,29 +15,16 @@ function ProtectedRoute({ children }) {
 function Home() { return <h2>Home Page</h2>; }
 function Login() { return <h2>Login Page (simulate login)</h2>; }
 
-function Profile() {
+function BlogPost() {
+  const { id } = useParams();
   return (
-    <div>
-      <h2>Profile Page</h2>
-      <nav>
-        <Link to="details">Details</Link> | <Link to="settings">Settings</Link>
-      </nav>
-      <div className="outlet-container">
-        <Outlet /> {/* Nested routes render here */}
-      </div>
+    <div className="outlet-container">
+      <h3>Blog Post ID: {id}</h3>
+      <p>This is a dynamically generated blog post page.</p>
     </div>
   );
 }
 
-function ProfileDetails() { return <p>This is your profile details.</p>; }
-function ProfileSettings() { return <p>This is your profile settings.</p>; }
-
-function BlogPost() {
-  const { id } = useParams();
-  return <h3>Blog Post ID: {id}</h3>;
-}
-
-// ✅ Only App has default export
 export default function App() {
   return (
     <BrowserRouter>
@@ -48,6 +39,7 @@ export default function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+
           <Route
             path="/profile/*"
             element={
@@ -59,6 +51,7 @@ export default function App() {
             <Route path="details" element={<ProfileDetails />} />
             <Route path="settings" element={<ProfileSettings />} />
           </Route>
+
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<h2>Page Not Found</h2>} />
