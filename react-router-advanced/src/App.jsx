@@ -1,11 +1,8 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Link, Navigate, Outlet, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Navigate, useParams } from "react-router-dom";
 import Profile from "./components/Profile.jsx";
-import ProfileDetails from "./components/ProfileDetails.jsx";
-import ProfileSettings from "./components/ProfileSettings.jsx";
 import "./styles/routes.css";
 
-// Simulated authentication
 const isAuthenticated = true;
 
 function ProtectedRoute({ children }) {
@@ -47,10 +44,7 @@ export default function App() {
                 <Profile />
               </ProtectedRoute>
             }
-          >
-            <Route path="details" element={<ProfileDetails />} />
-            <Route path="settings" element={<ProfileSettings />} />
-          </Route>
+          />
 
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/login" element={<Login />} />
