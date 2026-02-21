@@ -1,10 +1,10 @@
 body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #74ebd5, #acb6e5);
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(135deg, #4fd5fe, #fe007f);
+  padding: 0;
   height: 100vh;
 }
-
 
 .form-container {
   display: flex;
@@ -13,57 +13,53 @@ body {
   height: 100vh;
 }
 
-
 .form-card {
-  background: white;
-  padding: 30px;
-  width: 320px;
+  background-color: white;
+  padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  width: 350px;
 }
-
 
 .form-card h2 {
-  margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
+.form-card div {
+  margin-bottom: 1rem;
+}
+
+.form-card label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+}
 
 .form-card input {
   width: 100%;
-  padding: 10px;
-  margin: 8px 0 15px;
+  padding: 0.5rem;
   border-radius: 6px;
   border: 1px solid #ccc;
-  outline: none;
-  transition: 0.3s;
 }
 
-.form-card input:focus {
-  border-color: #4facfe;
-  box-shadow: 0 0 5px rgba(79,172,254,0.5);
-}
-
-
-.form-card button {
+button {
   width: 100%;
-  padding: 12px;
-  background: #4facfe;
-  color: white;
-  border: none;
+  padding: 0.7rem;
   border-radius: 6px;
-  cursor: pointer;
+  border: none;
+  background-color: #6a11cb;
+  color: white;
   font-weight: bold;
-  transition: 0.3s;
+  cursor: pointer;
 }
 
-.form-card button:hover {
-  background: #00c6ff;
+button:disabled {
+  background-color: #ccc;
 }
-
 
 .error {
   color: red;
-  margin-bottom: 10px;
-  font-size: 14px;
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
 }
