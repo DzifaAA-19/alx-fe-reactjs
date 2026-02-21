@@ -33,13 +33,13 @@ export default function App() {
           <Route path="/" element={<Home />} />
 
           <Route
-            path="/profile/*"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
+  path="/profile/*"
+  element={
+    <ProtectedRoute>
+      <Profile />
+    </ProtectedRoute>
+  }
+/>
 
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/login" element={<Login />} />
