@@ -19,7 +19,7 @@ export default function FormikForm() {
           initialValues={{ username: "", email: "", password: "" }}
           validationSchema={validationSchema}
           onSubmit={(values, { resetForm }) => {
-            resetForm(); // resets form after submit
+            resetForm();
           }}
         >
           {({ isSubmitting }) => (
