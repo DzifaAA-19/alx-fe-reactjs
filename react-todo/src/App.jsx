@@ -1,11 +1,10 @@
-import React from "react";
-import TodoList from "./components/TodoList";
-import TodoItem from "./components/TodoItem";
-import AddTodoForm from "./components/AddTodoForm";
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './App.css'
+import TodoList from './components/TodoList'
 
-export default function App() {
-  return <TodoList />;
-  <TodoItem />;
-  <AddTodoForm />;
-
-}
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <TodoList />
+  </React.StrictMode>
+)

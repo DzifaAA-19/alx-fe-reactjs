@@ -1,13 +1,215 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>react-todo</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Todo List</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f5f5;
+  color: #333;
+  padding: 40px 20px;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #111;
+}
+
+/* Form */
+.add-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.add-form input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.add-form input:focus {
+  border-color: #555;
+}
+
+.add-form button {
+  padding: 10px 18px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-form button:hover {
+  background: #333;
+}
+
+/* Section label */
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+/* Todo list */
+.todo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+/* Todo item */
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.todo-item:hover {
+  background: #fafafa;
+}
+
+.todo-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #111;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.todo-text.done {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.delete-btn:hover {
+  color: #e55;
+}
+
+/* Done section */
+.done-section {
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+/* Empty state */
+.empty {
+  text-align: center;
+  padding: 32px;
+  color: #bbb;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>Todo List</h1>
+  <form class="add-form" id="form">
+    <input type="text" placeholder="Add a task..." id="input" aria-label="New todo input"/>
+    <button type="submit">Add</button>
+  </form>
+  <div id="root"></div>
+</div>
+<script>
+let todos = [
+  {id:1,text:'Learn React',completed:false},
+  {id:2,text:'Write tests with Jest',completed:false},
+  {id:3,text:'Build a Todo App',completed:true},
+];
+
+function render() {
+  const active = todos.filter(t => !t.completed);
+  const done   = todos.filter(t =>  t.completed);
+  let html = '';
+
+  if (todos.length === 0) {
+    html = '<p class="empty">No tasks yet. Add one above!</p>';
+  } else {
+    if (active.length > 0) {
+      html += '<p class="section-label">To Do</p><ul class="todo-list">';
+      active.forEach(t => { html += item(t); });
+      html += '</ul>';
+    }
+    if (done.length > 0) {
+      html += '<div class="done-section"><p class="section-label">Done</p><ul class="todo-list">';
+      done.forEach(t => { html += item(t); });
+      html += '</ul></div>';
+    }
+  }
+
+  document.getElementById('root').innerHTML = html;
+}
+
+function item(t) {
+  return `<li class="todo-item">
+    <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggle(${t.id})" aria-label="Toggle ${t.text}"/>
+    <span class="todo-text ${t.completed ? 'done' : ''}" onclick="toggle(${t.id})">${t.text}</span>
+    <button class="delete-btn" onclick="del(${t.id})" aria-label="Delete ${t.text}">×</button>
+  </li>`;
+}
+
+function toggle(id) { todos = todos.map(t => t.id === id ? {...t, completed: !t.completed} : t); render(); }
+function del(id)    { todos = todos.filter(t => t.id !== id); render(); }
+
+document.getElementById('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const val = document.getElementById('input').value.trim();
+  if (val) { todos.push({id: Date.now(), text: val, completed: false}); document.getElementById('input').value = ''; render(); }
+});
+
+render();
+</script>
+</body>
 </html>
